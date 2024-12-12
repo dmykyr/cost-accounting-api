@@ -70,8 +70,8 @@ export class RecordsService {
 
   getAllRecords(userId?: number, categoryId?: number): Record[] {
     return this.records.filter((record) => {
-      const userMatches = userId === undefined || userId === null || record.userId == userId;
-      const categoryMatches = categoryId === undefined || categoryId === null || record.categoryId == categoryId;
+      const userMatches = isNaN(categoryId) || record.userId == userId;
+      const categoryMatches = isNaN(categoryId) || record.categoryId == categoryId;
       return userMatches && categoryMatches;
     });
   }
