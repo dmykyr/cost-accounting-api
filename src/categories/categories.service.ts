@@ -1,4 +1,3 @@
-import { User } from '../models/user';
 import { Category } from '../models/category';
 import { AddCategoryDTO } from '../dtos/addCategoryDTO';
 
@@ -13,9 +12,11 @@ export class CategoriesService {
     return this.categories;
   }
 
-  addCategory(categoryDTO: AddCategoryDTO) {
+  addCategory(categoryDTO: AddCategoryDTO): Category {
     const maxId = this.categories.map((category) => category.id).sort((a, b) => b - a)[0];
-    this.categories.push({ id: maxId + 1, name: categoryDTO.name });
+    const newCategory = { id: maxId + 1, name: categoryDTO.name };
+    this.categories.push(newCategory);
+    return newCategory;
   }
 
   deleteCategory(id: number): boolean {

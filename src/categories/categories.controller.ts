@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AddCategoryDTO } from '../dtos/addCategoryDTO';
 import { CategoriesService } from './categories.service';
+import { Category } from '../models/category';
 
 @Controller('category')
 export class CategoriesController {
@@ -11,7 +12,7 @@ export class CategoriesController {
   }
 
   @Post()
-  addCategory(@Body() addCategoryDTO: AddCategoryDTO) {
+  addCategory(@Body() addCategoryDTO: AddCategoryDTO): Category {
     return this.categoriesService.addCategory(addCategoryDTO);
   }
 

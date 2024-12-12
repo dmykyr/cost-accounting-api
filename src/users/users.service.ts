@@ -16,9 +16,11 @@ export class UsersService {
     return this.users.find((user) => user.id === id);
   }
 
-  addUser(dto: AddUserDto) {
+  addUser(dto: AddUserDto): User {
     const maxId = this.users.map((category) => category.id).sort((a, b) => b - a)[0];
-    this.users.push({ id: maxId + 1, name: dto.name });
+    const newUser = { id: maxId + 1, name: dto.name };
+    this.users.push(newUser);
+    return newUser;
   }
 
   deleteUser(id: number): boolean {

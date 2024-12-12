@@ -18,8 +18,8 @@ export class UsersController {
   }
 
   @Post()
-  addUser(@Body() addUserDto: AddUserDto) {
-    this.usersService.addUser(addUserDto);
+  addUser(@Body() addUserDto: AddUserDto): User {
+    return this.usersService.addUser(addUserDto);
   }
 
   @Delete('/:userId')
