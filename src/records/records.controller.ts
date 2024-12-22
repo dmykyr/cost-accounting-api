@@ -8,6 +8,8 @@ export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
   @Get()
   async getAllRecords(@Query('userId') userId: number, @Query('categoryId') categoryId: number): Promise<Record[]> {
+    console.log(userId, typeof userId);
+    console.log(categoryId, typeof categoryId);
     if (!userId && !categoryId) throw new BadRequestException('any parameters were provided');
 
     return this.recordsService.getAllRecords(userId, categoryId);

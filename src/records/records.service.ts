@@ -11,8 +11,8 @@ export class RecordsService {
   async getAllRecords(userId?: number, categoryId?: number): Promise<Record[]> {
     return this.recordRepository.find({
       where: {
-        userId,
-        categoryId,
+        userId: isNaN(userId) ? undefined : userId,
+        categoryId: isNaN(categoryId) ? undefined : categoryId,
       },
     });
   }

@@ -1,9 +1,10 @@
-import { Body, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { AddAccountDto } from '../dtos/addAccountDto';
 import { Account } from '../database/models/account';
 import { IncreaseAccountBalanceDto } from '../dtos/increaseAccountBalanceDto';
 
+@Controller('account')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
