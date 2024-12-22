@@ -21,8 +21,9 @@ export class RecordsService {
     return this.recordRepository.findOne({ where: { id: recordId } });
   }
 
-  async addRecord(dto: AddRecordDTO): Promise<Record> {
+  async addRecord(userId: number, dto: AddRecordDTO): Promise<Record> {
     return this.recordRepository.save({
+      userId,
       ...dto,
       createdAt: new Date(Date.now()),
     });

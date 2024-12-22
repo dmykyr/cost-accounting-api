@@ -10,7 +10,7 @@ export class UsersService {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({ relations: { account: true } });
   }
 
   async getUser(id: number): Promise<User> {

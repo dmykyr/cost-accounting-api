@@ -20,11 +20,6 @@ export class RecordsController {
     return this.recordsService.getRecord(recordId);
   }
 
-  @Post()
-  async addRecord(@Body() dto: AddRecordDTO): Promise<Record> {
-    return this.recordsService.addRecord(dto);
-  }
-
   @Delete('/:recordId')
   async deleteRecord(@Param('recordId') recordId: number) {
     await this.recordsService.deleteRecord(recordId);
