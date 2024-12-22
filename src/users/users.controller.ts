@@ -5,25 +5,25 @@ import { UsersService } from './users.service';
 
 @Controller('user')
 export class UsersController {
-  constructor(readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAllUsers(): User[] {
+  async getAllUsers(): Promise<User[]> {
     return this.usersService.getAllUsers();
   }
 
   @Get('/:userId')
-  getUser(@Param('userId') userId: number): User {
+  async getUser(@Param('userId') userId: number): Promise<User> {
     return this.usersService.getUser(userId);
   }
 
   @Post()
-  addUser(@Body() addUserDto: AddUserDto): User {
+  async addUser(@Body() addUserDto: AddUserDto): Promise<User> {
     return this.usersService.addUser(addUserDto);
   }
 
   @Delete('/:userId')
-  deleteUser(@Param('userId') userId: number) {
+  async deleteUser(@Param('userId') userId: number) {
     return this.usersService.deleteUser(userId);
   }
 }

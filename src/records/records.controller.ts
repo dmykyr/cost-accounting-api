@@ -7,24 +7,24 @@ import { RecordsService } from './records.service';
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
   @Get()
-  getAllRecords(@Query('userId') userId: number, @Query('categoryId') categoryId: number): Record[] {
+  async getAllRecords(@Query('userId') userId: number, @Query('categoryId') categoryId: number): Promise<Record[]> {
     if (!userId && !categoryId) throw new BadRequestException('any parameters were provided');
 
     return this.recordsService.getAllRecords(userId, categoryId);
   }
 
   @Get('/:recordId')
-  getRecord(@Param('recordId') recordId: number): Record {
+  async getRecord(@Param('recordId') recordId: number): Promise<Record> {
     return this.recordsService.getRecord(recordId);
   }
 
   @Post()
-  addRecord(@Body() dto: AddRecordDTO): Record {
+  async addRecord(@Body() dto: AddRecordDTO): Promise<Record> {
     return this.recordsService.addRecord(dto);
   }
 
   @Delete('/:recordId')
-  deleteRecord(@Param('recordId') recordId: number) {
-    this.recordsService.deleteRecord(recordId);
+  async deleteRecord(@Param('recordId') recordId: number) {
+    await this.recordsService.deleteRecord(recordId);
   }
 }

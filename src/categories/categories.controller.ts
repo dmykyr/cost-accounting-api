@@ -12,12 +12,12 @@ export class CategoriesController {
   }
 
   @Post()
-  addCategory(@Body() addCategoryDTO: AddCategoryDTO): Category {
+  async addCategory(@Body() addCategoryDTO: AddCategoryDTO): Promise<Category> {
     return this.categoriesService.addCategory(addCategoryDTO);
   }
 
   @Delete('/:categoryId')
-  deleteCategory(@Param('categoryId') categoryId: number) {
-    this.categoriesService.deleteCategory(categoryId);
+  async deleteCategory(@Param('categoryId') categoryId: number) {
+    await this.categoriesService.deleteCategory(categoryId);
   }
 }

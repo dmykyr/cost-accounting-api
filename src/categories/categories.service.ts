@@ -1,32 +1,22 @@
 import { Category } from '../database/models/category';
+import { Repository } from 'typeorm';
 import { AddCategoryDTO } from '../dtos/addCategoryDTO';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export class CategoriesService {
-  private readonly categories: Category[] = [
-    { id: 1, name: 'Food' },
-    { id: 2, name: 'Medicine' },
-    { id: 3, name: 'Entertainment' },
-  ];
-
-  getAllCategories(): Category[] {
-    return this.categories;
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
+  async getAllCategories(): Promise<Category[]> {
+    return this.categoryRepository.find();
   }
 
-  addCategory(categoryDTO: AddCategoryDTO): Category {
-    const maxId = this.categories.map((category) => category.id).sort((a, b) => b - a)[0];
-    const newCategory = { id: maxId + 1, name: categoryDTO.name };
-    this.categories.push(newCategory);
-    return newCategory;
+  async addCategory(categoryDTO: AddCategoryDTO): Promise<Category> {
+    return this.categoryRepository.save({ name: categoryDTO.name });
   }
 
-  deleteCategory(id: number): boolean {
-    const userIndex = this.categories.findIndex((user) => user.id == id);
-
-    if (userIndex !== -1) {
-      this.categories.splice(userIndex, 1);
-      return true;
-    }
-
-    return false;
+  async deleteCategory(id: number): Promise<void> {
+    await this.categoryRepository.delete(id);
   }
 }
