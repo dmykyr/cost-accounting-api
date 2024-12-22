@@ -1,36 +1,31 @@
-import { User } from '../models/user';
+import { User } from '../database/models/user';
 import { AddUserDto } from '../dtos/addUserDto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AccountService } from '../accounts/account.service';
 
 export class UsersService {
-  private readonly users: User[] = [
-    { id: 1, name: 'Luka' },
-    { id: 2, name: 'Dorm' },
-    { id: 3, name: 'Isak' },
-  ];
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly accountService: AccountService,
+  ) {}
 
-  getAllUsers(): User[] {
-    return this.users;
+  async getAllUsers(): Promise<User[]> {
+    return this.userRepository.find({ relations: { account: true } });
   }
 
-  getUser(id: number): User {
-    return this.users.find((user) => user.id === id);
+  async getUser(id: number): Promise<User> {
+    return this.userRepository.findOne({ where: { id } });
   }
 
-  addUser(dto: AddUserDto): User {
-    const maxId = this.users.map((category) => category.id).sort((a, b) => b - a)[0];
-    const newUser = { id: maxId + 1, name: dto.name };
-    this.users.push(newUser);
-    return newUser;
+  async addUser(dto: AddUserDto): Promise<User> {
+    const user = await this.userRepository.save({ name: dto.name });
+    await this.accountService.addAccount({ userId: user.id, initialBalance: 0 });
+    return user;
   }
 
-  deleteUser(id: number): boolean {
-    const userIndex = this.users.findIndex((user) => user.id == id);
-
-    if (userIndex !== -1) {
-      this.users.splice(userIndex, 1);
-      return true;
-    }
-
-    return false;
+  async deleteUser(id: number) {
+    await this.userRepository.delete(id);
   }
 }

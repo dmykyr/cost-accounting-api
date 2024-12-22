@@ -1,30 +1,37 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
-import { Record } from '../models/record';
-import { AddRecordDTO } from '../dtos/AddRecordDTO';
+import {
+  BadRequestException,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
+import { Record } from '../database/models/record';
 import { RecordsService } from './records.service';
+import { RecordByIdPipe } from './recordByIdPipe';
 
 @Controller('record')
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
-  @Get()
-  getAllRecords(@Query('userId') userId: number, @Query('categoryId') categoryId: number): Record[] {
-    if (!userId && !categoryId) throw new BadRequestException('any parameters were provided');
 
+  @Get()
+  async getAllRecords(
+      @Query('userId') userId: number,
+      @Query('categoryId') categoryId: number,
+  ): Promise<Record[]> {
+    if (!userId && !categoryId) {
+      throw new BadRequestException('At least one parameter is required');
+    }
     return this.recordsService.getAllRecords(userId, categoryId);
   }
 
   @Get('/:recordId')
-  getRecord(@Param('recordId') recordId: number): Record {
-    return this.recordsService.getRecord(recordId);
-  }
-
-  @Post()
-  addRecord(@Body() dto: AddRecordDTO): Record {
-    return this.recordsService.addRecord(dto);
+  async getRecord(@Param('recordId', RecordByIdPipe) record: Record): Promise<Record> {
+    return record;
   }
 
   @Delete('/:recordId')
-  deleteRecord(@Param('recordId') recordId: number) {
-    this.recordsService.deleteRecord(recordId);
+  async deleteRecord(@Param('recordId', RecordByIdPipe) record: Record) {
+    await this.recordsService.deleteRecord(record.id);
   }
 }

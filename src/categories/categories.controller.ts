@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AddCategoryDTO } from '../dtos/addCategoryDTO';
 import { CategoriesService } from './categories.service';
-import { Category } from '../models/category';
+import { Category } from '../database/models/category';
 
 @Controller('category')
 export class CategoriesController {
@@ -12,12 +12,12 @@ export class CategoriesController {
   }
 
   @Post()
-  addCategory(@Body() addCategoryDTO: AddCategoryDTO): Category {
+  async addCategory(@Body() addCategoryDTO: AddCategoryDTO): Promise<Category> {
     return this.categoriesService.addCategory(addCategoryDTO);
   }
 
   @Delete('/:categoryId')
-  deleteCategory(@Param('categoryId') categoryId: number) {
-    this.categoriesService.deleteCategory(categoryId);
+  async deleteCategory(@Param('categoryId') categoryId: number) {
+    await this.categoriesService.deleteCategory(categoryId);
   }
 }
