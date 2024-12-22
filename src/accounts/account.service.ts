@@ -23,7 +23,15 @@ export class AccountService {
     await this.accountRepository.update(accountId, { balance: newBalance });
   }
 
+  async setAccountBalance(accountId: number, newBalanceValue: number) {
+    await this.accountRepository.update(accountId, { balance: newBalanceValue });
+  }
+
   async deleteAccount(id: number) {
     await this.accountRepository.delete(id);
+  }
+
+  async getAccount(id: number) {
+    return this.accountRepository.findOneBy({ id });
   }
 }

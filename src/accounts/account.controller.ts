@@ -3,6 +3,7 @@ import { AccountService } from './account.service';
 import { AddAccountDto } from '../dtos/addAccountDto';
 import { Account } from '../database/models/account';
 import { IncreaseAccountBalanceDto } from '../dtos/increaseAccountBalanceDto';
+import { AccountByIdPipe } from './accountByIdPipe';
 
 @Controller('account')
 export class AccountController {
@@ -10,10 +11,10 @@ export class AccountController {
 
   @Post('/:accountId/balance')
   async addBalance(
-      @Param('accountId') accountId: number,
-      @Body() increaseAccountBalanceDto: IncreaseAccountBalanceDto
+      @Param('accountId', AccountByIdPipe) account: Account,
+      @Body() increaseAccountBalanceDto: IncreaseAccountBalanceDto,
   ): Promise<void> {
-    return this.accountService.addBalance(increaseAccountBalanceDto, accountId);
+    return this.accountService.addBalance(increaseAccountBalanceDto, account.id);
   }
 
   @Post()
@@ -22,7 +23,7 @@ export class AccountController {
   }
 
   @Delete('/:accountId')
-  async deleteAccount(@Param('accountId') accountId: number) {
-    return this.accountService.deleteAccount(accountId);
+  async deleteAccount(@Param('accountId', AccountByIdPipe) account: Account) {
+    return this.accountService.deleteAccount(account.id);
   }
 }

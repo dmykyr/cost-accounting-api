@@ -19,4 +19,8 @@ export class CategoriesService {
   async deleteCategory(id: number): Promise<void> {
     await this.categoryRepository.delete(id);
   }
+
+  async getCategory(id: number) {
+    return this.categoryRepository.findOneBy({ id });
+  }
 }

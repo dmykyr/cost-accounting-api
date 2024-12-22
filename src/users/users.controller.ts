@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { AddRecordDTO } from '../dtos/AddRecordDTO';
 import { Record } from '../database/models/record';
 import { RecordsService } from '../records/records.service';
+import { UserByIdPipe } from './userByIdPipe';
 
 @Controller('user')
 export class UsersController {
@@ -19,8 +20,8 @@ export class UsersController {
   }
 
   @Get('/:userId')
-  async getUser(@Param('userId') userId: number): Promise<User> {
-    return this.usersService.getUser(userId);
+  async getUser(@Param('userId', UserByIdPipe) user: User): Promise<User> {
+    return user;
   }
 
   @Post()
@@ -29,15 +30,12 @@ export class UsersController {
   }
 
   @Post('/:userId/records')
-  async addRecord(
-      @Param('userId') userId: number,
-      @Body() dto: AddRecordDTO
-  ): Promise<Record> {
-    return this.recordsService.addRecord(userId, dto);
+  async addRecord(@Param('userId', UserByIdPipe) user: User, @Body() dto: AddRecordDTO): Promise<Record> {
+    return this.recordsService.addRecord(user.id, dto);
   }
 
   @Delete('/:userId')
-  async deleteUser(@Param('userId') userId: number) {
-    return this.usersService.deleteUser(userId);
+  async deleteUser(@Param('userId', UserByIdPipe) user: User) {
+    return this.usersService.deleteUser(user.id);
   }
 }
