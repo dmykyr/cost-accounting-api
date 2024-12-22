@@ -1,4 +1,4 @@
-import { Record } from '../models/record';
+import { Record } from '../database/models/record';
 import { AddRecordDTO } from '../dtos/AddRecordDTO';
 
 export class RecordsService {

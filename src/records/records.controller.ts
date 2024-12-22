@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
-import { Record } from '../models/record';
+import { Record } from '../database/models/record';
 import { AddRecordDTO } from '../dtos/AddRecordDTO';
 import { RecordsService } from './records.service';
 

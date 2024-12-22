@@ -1,4 +1,4 @@
-import { User } from '../models/user';
+import { User } from '../database/models/user';
 import { AddUserDto } from '../dtos/addUserDto';
 
 export class UsersService {
