@@ -10,6 +10,9 @@ export class User {
   @Column('varchar', { name: 'name', length: 200 })
   name: string;
 
+  @Column('varchar', { name: 'password', length: 200, default: '' })
+  password: string;
+
   @OneToMany(() => Record, (record) => record.user)
   records: Record[];
 
