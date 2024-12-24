@@ -1,8 +1,9 @@
 import { User } from '../database/models/user';
 import { AddUserDto } from '../dtos/addUserDto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { AccountService } from '../accounts/account.service';
+import * as bcrypt from 'bcrypt';
 
 export class UsersService {
   constructor(
@@ -15,12 +16,16 @@ export class UsersService {
     return this.userRepository.find({ relations: { account: true } });
   }
 
-  async getUser(id: number): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
+  async getUser(where: FindOptionsWhere<User>): Promise<User> {
+    return this.userRepository.findOne({ where, relations: { account: true } });
   }
 
   async addUser(dto: AddUserDto): Promise<User> {
-    const user = await this.userRepository.save({ name: dto.name });
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const user = await this.userRepository.save({
+      name: dto.name,
+      password: hashedPassword,
+    });
     await this.accountService.addAccount({ userId: user.id, initialBalance: 0 });
     return user;
   }

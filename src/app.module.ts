@@ -6,6 +6,7 @@ import { HealthcheckModule } from './healthcheck/healthcheck.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AccountModule } from './accounts/account.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { AccountModule } from './accounts/account.module';
     CategoriesModule,
     RecordsModule,
     AccountModule,
-    HealthcheckModule
+    HealthcheckModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

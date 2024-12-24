@@ -13,7 +13,7 @@ export class UserByIdPipe implements PipeTransform {
       throw new BadRequestException('User Id must be a positive number');
     }
 
-    const user = await this.usersService.getUser(userId);
+    const user = await this.usersService.getUser({ id: userId });
     if (!user) {
       throw new NotFoundException(`User with Id ${userId} not found`);
     }
