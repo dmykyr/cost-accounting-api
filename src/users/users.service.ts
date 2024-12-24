@@ -1,7 +1,7 @@
 import { User } from '../database/models/user';
 import { AddUserDto } from '../dtos/addUserDto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { AccountService } from '../accounts/account.service';
 import * as bcrypt from 'bcrypt';
 
@@ -16,8 +16,12 @@ export class UsersService {
     return this.userRepository.find({ relations: { account: true } });
   }
 
-  async getUser(id: number): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
+  async getUser(where: FindOptionsWhere<User>): Promise<User> {
+    return this.userRepository.findOneBy(where);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { name: username } });
   }
 
   async addUser(dto: AddUserDto): Promise<User> {
