@@ -17,7 +17,7 @@ export class UsersService {
   }
 
   async getUser(where: FindOptionsWhere<User>): Promise<User> {
-    return this.userRepository.findOneBy(where);
+    return this.userRepository.findOne({ where, relations: { account: true } });
   }
 
   async addUser(dto: AddUserDto): Promise<User> {

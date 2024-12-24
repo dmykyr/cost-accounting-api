@@ -23,14 +23,12 @@ export class AuthService {
 
   async login(user: User) {
     const payload: JwtPayload = { username: user.name, sub: user.id };
-    console.log('payload', payload);
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
   async validateUser(dto: LoginDTO): Promise<any> {
-    console.log(dto);
     const user = await this.usersService.getUser({ name: dto.name });
     if (!user) {
       throw new BadRequestException('User was not found');
