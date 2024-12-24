@@ -20,10 +20,6 @@ export class UsersService {
     return this.userRepository.findOneBy(where);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { name: username } });
-  }
-
   async addUser(dto: AddUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const user = await this.userRepository.save({
